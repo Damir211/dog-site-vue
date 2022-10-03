@@ -1,6 +1,6 @@
 <template>
     <div class="list" :class="{'list-main': isMainPage}">
-        <div class="container" v-if="items.length">
+        <div class="container" v-if="items.length && isFirstContentLoaded">
             <list-item 
                 :imgSrc="item.imgSrc"
                 :imgAlt="item.imgAlt"
@@ -8,6 +8,12 @@
                 v-for="(item, index) in items"
                 :key="index"
             />
+        </div>
+        <div class="container" v-else-if="!isFirstContentLoaded">
+            <div class="container__loading">
+                <img src="@/assets/img/await-dog.svg" alt="loading">
+                <span style="color: #fff; font-size: 30px">Loading...</span>
+            </div>
         </div>
         <div class="container" v-else>
             <span style="color: #fff; font-size: 30px">Нету таких Пёселей(</span>
@@ -21,6 +27,10 @@
         props: {
             isMainPage: Boolean,
             items: Array,
+            isFirstContentLoaded: {
+                type: Boolean,
+                default: true
+            }
         },
         components: {
             ListItem,
@@ -64,6 +74,16 @@
     .container{
         display: flex;
         flex-wrap: wrap;
+        &__loading{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            img{
+                max-width: 100%;
+            }
+        }
     }
     &__item{
         position: relative;

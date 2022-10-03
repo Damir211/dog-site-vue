@@ -9,7 +9,7 @@
     export default {
         data(){
             return {
-                hideButton: false,
+                hideButton: true,
             }
         },
         methods: {

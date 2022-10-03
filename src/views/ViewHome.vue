@@ -1,8 +1,8 @@
 <template>
     <header-component />
     <filter-component :is-main-page="true" v-model="alphabeticalSorting"/>
-    <list-component :is-main-page="true" :items="filtredDogsList"/>
-    <loader-component />
+    <list-component :is-main-page="true" :items="filtredDogsList" :isFirstContentLoaded="isFirstContentLoaded"/>
+    <loader-component v-show="isFirstContentLoaded" />
     
     <up-component />
 </template>
@@ -20,6 +20,7 @@
             return {
                 loading: false,
                 alphabeticalSorting: false,
+                isFirstContentLoaded: false,
             }
         },  
         computed: {
@@ -44,8 +45,10 @@
             },
         },
         mounted(){
-            this.GET_RANDOM_DOGS_LIST();
-            window.addEventListener('scroll', this.inifinityScroll);
+            this.GET_RANDOM_DOGS_LIST().then(()=>{
+                this.isFirstContentLoaded = true;
+                window.addEventListener('scroll', this.inifinityScroll);
+            });
         },  
         unmounted(){
             window.removeEventListener('scroll', this.inifinityScroll);

@@ -1,7 +1,7 @@
 <template>
     <header-component />
     <filter-component :is-main-page="false"/>
-    <list-component :is-main-page="false" :items="DOGS_LIST"/>
+    <list-component :is-main-page="false" :items="DOGS_LIST" :isFirstContentLoaded="isFirstContentLoaded"/>
     
     <up-component />
 </template>
@@ -14,8 +14,15 @@
     import { mapGetters, mapActions } from 'vuex';
 
     export default{
+        data(){
+            return{
+                isFirstContentLoaded: false,
+            }
+        },
         mounted(){
-            this.GET_DOGS_FROM_BREED(this.$route.params.id.split('-').join('/'));
+            this.GET_DOGS_FROM_BREED(this.$route.params.id.split('-').join('/')).then(()=>{
+                this.isFirstContentLoaded = true;
+            });
             this.$watch(
                 () => this.$route.params, 
                 (toParams) => {
